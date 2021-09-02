@@ -284,7 +284,8 @@ def create_alarm(AlarmName, MetricName, ComparisonOperator, Period, Threshold, S
             'Namespace': Namespace,
             'Dimensions': Dimensions,
             'Period': Period,
-            'EvaluationPeriods': 1,
+            'EvaluationPeriods': 15,
+            'DatapointsToAlarm': 10,
             'Threshold': Threshold,
             'ComparisonOperator': ComparisonOperator,
             'Statistic': Statistic

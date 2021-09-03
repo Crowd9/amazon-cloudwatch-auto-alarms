@@ -158,7 +158,9 @@ def create_alarm_from_tag(id, alarm_tag, instance_info, metric_dimensions_map, s
         logger.error('Unable to determine the dimensions for alarm tag: {}'.format(alarm_tag))
         raise Exception
 
-    AlarmName = 'AutoAlarm-{}-{}-{}'.format(id, namespace, MetricName)
+    InstanceName = next((tag['Value'] for tag in instance_info['Tags'] if tag['Key'] == 'Name'), '')
+
+    AlarmName = 'AutoAlarm-{}-{}-{}-{}'.format(InstanceName, id, namespace, MetricName)
     properties_offset = 0
     if additional_dimensions:
         for num, dim in enumerate(additional_dimensions[::2]):
@@ -282,7 +284,8 @@ def create_alarm(AlarmName, MetricName, ComparisonOperator, Period, Threshold, S
             'Namespace': Namespace,
             'Dimensions': Dimensions,
             'Period': Period,
-            'EvaluationPeriods': 1,
+            'EvaluationPeriods': 15,
+            'DatapointsToAlarm': 10,
             'Threshold': Threshold,
             'ComparisonOperator': ComparisonOperator,
             'Statistic': Statistic
